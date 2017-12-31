@@ -51,7 +51,7 @@
 
 (defn wrap-uuid [handler]
   (fn [req]
-    (assoc req :uuid (.randomUUID java.util.UUID))
+    (assoc req :uuid (java.util.UUID/randomUUID))
     (handler req)))
 
 (defn wrap-csrf [handler]
