@@ -5,7 +5,6 @@
    [vielheit.db.core :as db]
    [vielheit.services.auth :as auth]
    [ring.util.http-response :as response]
-   [vielheit.util.error :refer [unwrap*]]
    [vielheit.services.register :as register]))
 
 (defn- error-unique? [e]
