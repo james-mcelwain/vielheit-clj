@@ -13,7 +13,7 @@
 
 (defn- handle-register-error [e user]
   (case
-      {}(error-unique? e)
+      (error-unique? e)
     (do
       (log/error (str "email exists " (:email user)) e)
       (response/bad-request {:error "email exists"
@@ -23,6 +23,7 @@
 (defroutes register-routes
   (POST "/register" {user :params}
         (try
-          (response/ok (db/create-user! (auth/encrypt-password user)))
+          (db/create-user! (auth/encrypt-password user))
+          (response/ok)
           (catch Exception e (handle-register-error e user)))))
 
