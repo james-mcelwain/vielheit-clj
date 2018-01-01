@@ -3,6 +3,7 @@
             [vielheit.layout :refer [error-page]]
             [vielheit.routes.home :refer [home-routes]]
             [vielheit.routes.register :refer [register-routes]]
+            [vielheit.routes.auth :refer [auth-routes]]
             [vielheit.routes.api.core :refer [api-routes]]
             [compojure.route :as route]
             [vielheit.env :refer [defaults]]
@@ -18,14 +19,19 @@
    (-> #'home-routes
        (wrap-routes middleware/wrap-csrf)
        (wrap-routes middleware/wrap-formats))
+
+   (-> #'auth-routes
+       (wrap-routes middleware/wrap-formats))
+
    (-> #'register-routes
        (wrap-routes middleware/wrap-formats))
 
-   ;; (context "/api" []
-   ;;          (-> #'api-routes
-   ;;              (wrap-routes middleware/wrap-csrf)
-   ;;              (wrap-routes middleware/wrap-formats)
-   ;;              (wrap-routes middleware/wrap-restricted)))
+   (context "/api" []
+            (-> #'api-routes
+                (wrap-routes middleware/wrap-csrf)
+                (wrap-routes middleware/wrap-formats)
+                (wrap-routes middleware/wrap-restricted)))
+
    (route/not-found
     (:body
      (error-page {:status 404

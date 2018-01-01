@@ -1,28 +1,34 @@
 (ns vielheit.middleware
-  (:require [vielheit.env :refer [defaults]]
+  (:require [buddy.auth :refer [authenticated?]]
+            [buddy.auth.accessrules :refer [restrict]]
+            [buddy.auth.backends.token :refer [jwe-backend]]
+            [buddy.auth.middleware :refer [wrap-authentication wrap-authorization]]
+            [buddy.core.keys :as keys]
+            [buddy.core.nonce :refer [random-bytes]]
+            [buddy.sign.jwt :refer [encrypt]]
             [cheshire.generate :as cheshire]
-            [cognitect.transit :as transit]
+            [clj-time.core :refer [plus now minutes]]
             [clojure.tools.logging :as log]
-            [vielheit.layout :refer [*app-context* error-page]]
-            [ring.middleware.anti-forgery :refer [wrap-anti-forgery]]
-            [ring.middleware.webjars :refer [wrap-webjars]]
+            [clojure.java.io :as io]
+            [cognitect.transit :as transit]
+            [immutant.web.middleware :refer [wrap-session]]
             [muuntaja.core :as muuntaja]
             [muuntaja.format.json :refer [json-format]]
             [muuntaja.format.transit :as transit-format]
             [muuntaja.middleware :refer [wrap-format wrap-params]]
-            [vielheit.config :refer [env]]
-            [ring.middleware.flash :refer [wrap-flash]]
-            [immutant.web.middleware :refer [wrap-session]]
+            [ring.middleware.anti-forgery :refer [wrap-anti-forgery]]
             [ring.middleware.defaults :refer [site-defaults wrap-defaults]]
-            [buddy.auth.middleware :refer [wrap-authentication wrap-authorization]]
-            [buddy.auth.accessrules :refer [restrict]]
-            [buddy.auth :refer [authenticated?]]
-            [buddy.auth.backends.token :refer [jwe-backend]]
-            [buddy.sign.jwt :refer [encrypt]]
-            [buddy.core.nonce :refer [random-bytes]]
-            [clj-time.core :refer [plus now minutes]])
+            [ring.middleware.flash :refer [wrap-flash]]
+            [ring.middleware.webjars :refer [wrap-webjars]]
+            [vielheit.config :refer [env]]
+            [vielheit.layout :refer [*app-context* error-page]]
+            [vielheit.env :refer [defaults]])
   (:import [javax.servlet ServletContext]
            [org.joda.time ReadableInstant]))
+
+(def secret "Password1")
+(def pub-key (keys/public-key (io/resource "keys/pubkey.pem")))
+(def priv-key (keys/private-key (io/resource "keys/privkey.pem") secret))
 
 (defn wrap-context [handler]
   (fn [request]
@@ -98,24 +104,24 @@
 
 (defn on-error [request response]
   (error-page
-    {:status 403
-     :title (str "Access to " (:uri request) " is not authorized")}))
+   {:status 403
+    :title (str "Access to " (:uri request) " is not authorized")}))
 
 (defn wrap-restricted [handler]
   (restrict handler {:handler authenticated?
                      :on-error on-error}))
 
-(def secret (random-bytes 32))
-
 (def token-backend
-  (jwe-backend {:secret secret
-                :options {:alg :a256kw
-                          :enc :a128gcm}}))
+  (jwe-backend {:secret priv-key
+                :options
+                {:alg :rsa-oaep
+                 :enc :a128cbc-hs256}}))
 
 (defn token [username]
   (let [claims {:user (keyword username)
                 :exp (plus (now) (minutes 60))}]
-    (encrypt claims secret {:alg :a256kw :enc :a128gcm})))
+    (encrypt claims pub-key {:alg :rsa-oaep
+                             :enc :a128cbc-hs256})))
 
 (defn wrap-auth [handler]
   (let [backend token-backend]

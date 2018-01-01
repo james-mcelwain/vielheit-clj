@@ -2,7 +2,12 @@
   (:require
    [compojure.core :refer [defroutes GET]]
    [ring.util.http-response :as response]
-   [buddy.hashers :as hashers]))
+   [vielheit.middleware :as middleware]
+   [vielheit.services.auth :as auth]))
 
 (defroutes auth-routes
-  (GET "/authenticate" []))
+  (GET "/authenticate" {{email :email pass :pass} :params}
+       (println email pass)
+       (if (auth/password-matches? email pass)
+         (middleware/token email)
+         (response/forbidden))))
