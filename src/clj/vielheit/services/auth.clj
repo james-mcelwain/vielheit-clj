@@ -5,7 +5,9 @@
 
 (defn password-matches? [email password]
   (if-let [user (db/get-user-by-email {:email email})]
-    (hashers/check password (:pass user))
+    (do 
+      (println (hash-password password) (:pass user))
+      (hashers/check password (:pass user)))
     false))
 
 (defn hash-password [password]
