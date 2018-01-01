@@ -1,11 +1,11 @@
-(ns vielheit.services.auth
+(ns vielheit.auth
   (:require
    [vielheit.db.core :as db]
    [buddy.hashers :as hashers]))
 
 (defn password-matches? [email password]
   (if-let [user (db/get-user-by-email {:email email})]
-    (do 
+    (do
       (println (hash-password password) (:pass user))
       (hashers/check password (:pass user)))
     false))
