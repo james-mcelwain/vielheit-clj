@@ -33,15 +33,12 @@
 (defn about-page []
   [:div.container
    [:div.row
-    [:div.col-md-12
-     [:img {:src (str js/context "/img/warning_clojure.png")}]]]])
+    [:div.col-md-12 "Vielheit is an experiment..."]]])
 
 (defn home-page []
   [:div.container
    (when-let [docs @(rf/subscribe [:docs])]
-     [:div.row>div.col-sm-12
-      [:div {:dangerouslySetInnerHTML
-             {:__html (md->html docs)}}]])])
+     [:div "ok"])])
 
 (def pages
   {:home #'home-page
