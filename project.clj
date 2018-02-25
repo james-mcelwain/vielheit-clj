@@ -57,7 +57,7 @@
    :nrepl-port 7002
    :css-dirs ["resources/public/css"]
    :nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
-  
+
 
   :profiles
   {:uberjar {:omit-source true
@@ -73,8 +73,8 @@
                  :closure-warnings
                  {:externs-validation :off :non-standard-jsdoc :off}
                  :externs ["react/externs/react.js"]}}}}
-             
-             
+
+
              :aot :all
              :uberjar-name "vielheit.jar"
              :source-paths ["env/prod/clj"]
@@ -110,9 +110,8 @@
                       :optimizations :none
                       :pretty-print true
                       :preloads [re-frisk.preload]}}}}
-                  
-                  
-                  
+
+
                   :doo {:build "test"}
                   :source-paths ["env/dev/clj"]
                   :resource-paths ["env/dev/resources"]
@@ -120,6 +119,7 @@
                   :injections [(require 'pjstadig.humane-test-output)
                                (pjstadig.humane-test-output/activate!)]}
    :project/test {:resource-paths ["env/test/resources"]
+                  :dependencies [[faker "0.2.2"]]
                   :cljsbuild
                   {:builds
                    {:test
@@ -129,7 +129,7 @@
                       :main "vielheit.doo-runner"
                       :optimizations :whitespace
                       :pretty-print true}}}}
-                  
+
                   }
    :profiles/dev {}
    :profiles/test {}})
