@@ -1,5 +1,4 @@
 {:dev true
  :port 3000
- :database-url "jdbc:postgresql://localhost:5432/vielheit_test?user=vielheit&password=vielheit"
  ;; when :nrepl-port is set the application starts the nREPL server on load
  :nrepl-port 7000}
