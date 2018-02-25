@@ -1,4 +1,4 @@
-(ns vielheit.handler-test
+(ns vielheit.test.handler
   (:require [clojure.test :refer :all]
             [ring.mock.request :refer :all]
             [vielheit.handler :refer :all]))

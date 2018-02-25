@@ -1,4 +1,4 @@
-(ns vielheit.test.api.core-test
+(ns vielheit.test.routes.api.core
   (:require [clojure.test :refer :all]
             [ring.mock.request :refer :all]
             [vielheit.handler :refer :all]))
