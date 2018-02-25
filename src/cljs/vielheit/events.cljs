@@ -3,6 +3,15 @@
             [re-frame.core :refer [dispatch reg-event-db reg-sub]]))
 
 ;;dispatchers
+(reg-event-db
+ :log-in
+ (fn [db [_ user]]
+   (assoc db :logged-in true :user user)))
+
+(reg-event-db
+ :log-out
+ (fn [db [_ _]]
+   (assoc db :logged-in false :user nil)))
 
 (reg-event-db
   :initialize-db
@@ -14,19 +23,13 @@
   (fn [db [_ page]]
     (assoc db :page page)))
 
-(reg-event-db
-  :set-docs
-  (fn [db [_ docs]]
-    (assoc db :docs docs)))
-
 ;;subscriptions
+(reg-sub
+ :logged-in
+ (fn [db _]
+   (:logged-in db)))
 
 (reg-sub
   :page
   (fn [db _]
     (:page db)))
-
-(reg-sub
-  :docs
-  (fn [db _]
-    (:docs db)))
