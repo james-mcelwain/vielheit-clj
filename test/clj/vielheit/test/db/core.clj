@@ -4,7 +4,8 @@
             [clojure.test :refer :all]
             [clojure.java.jdbc :as jdbc]
             [vielheit.config :refer [env]]
-            [mount.core :as mount]))
+            [mount.core :as mount]
+            [vielheit.test.util.user :refer [random-user]]))
 
 (use-fixtures
   :once
@@ -15,20 +16,12 @@
     (migrations/migrate ["migrate"] (select-keys env [:database-url]))
     (f)))
 
+(defn map-subset? [a-map b-map]
+  (every? (fn [[k _ :as entry]] (= entry (find b-map k))) a-map))
+
 (deftest test-users
-  (jdbc/with-db-transaction [t-conn *db*]
+  (let [user (random-user)]
+    (jdbc/with-db-transaction [t-conn *db*]
     (jdbc/db-set-rollback-only! t-conn)
-    (is (= 1 (db/create-user!
-               t-conn
-               {:first_name "Sam"
-                :last_name  "Smith"
-                :email      "sam.smith@example.com"
-                :pass       "pass"})))
-    (is (= {:first_name "Sam"
-            :last_name  "Smith"
-            :email      "sam.smith@example.com"
-            :pass       "pass"
-            :admin      nil
-            :last_login nil
-            :is_active  nil}
-           (dissoc (db/get-user-by-email t-conn {:email "sam.smith@example.com"}) :id)))))
+    (is (= 1 (db/create-user! t-conn user)))
+    (is (map-subset? user (db/get-user-by-email t-conn {:email (:email user)}))))))
