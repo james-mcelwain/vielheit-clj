@@ -50,8 +50,7 @@ jobs:
     steps:
       - checkout
 
-      - run: npm install karma karma-firefox-launcher karma-cljs-test
-      - run: npm install -g karma-cli
+      - run: npm install karma karma-firefox-launcher karma-cljs-test karma-cli
 
       - restore_cache:
           keys:
