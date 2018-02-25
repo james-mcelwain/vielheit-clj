@@ -7,7 +7,7 @@
   {:first_name (name/first-name)
    :last_name  (name/last-name)
    :email      (str (random/hex 6) (net/email))
-   :pass       "pass" hex
+   :pass       "pass"
    :admin nil
    :last_login nil
    :is_active nil})
