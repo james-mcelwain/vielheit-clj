@@ -119,7 +119,8 @@
                   :injections [(require 'pjstadig.humane-test-output)
                                (pjstadig.humane-test-output/activate!)]}
    :project/test {:resource-paths ["env/test/resources"]
-                  :dependencies [[faker "0.2.2"]]
+                  :dependencies [[faker "0.2.2"]
+                                 [crypto-random "1.2.0"]]
                   :cljsbuild
                   {:builds
                    {:test

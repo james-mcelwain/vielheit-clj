@@ -24,8 +24,6 @@ jobs:
     steps:
       - checkout
 
-      - run: $JAVA_HOME/bin/jrunscript -e 'print (javax.crypto.Cipher.getMaxAllowedKeyLength("RC5") >= 256);'
-
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "project.clj" }}
