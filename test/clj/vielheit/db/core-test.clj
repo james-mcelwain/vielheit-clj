@@ -1,4 +1,4 @@
-(ns vielheit.test.db.core
+(ns vielheit.db.core-test
   (:require [vielheit.db.core :refer [*db*] :as db]
             [luminus-migrations.core :as migrations]
             [clojure.test :refer :all]

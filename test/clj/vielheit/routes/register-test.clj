@@ -1,4 +1,4 @@
-(ns vielheit.test.routes.register
+(ns vielheit.routes.register-test
   (:require [clojure.test :refer :all]
             [ring.mock.request :refer :all]
             [vielheit.handler :refer :all]))
