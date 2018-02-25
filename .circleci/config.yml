@@ -39,7 +39,7 @@ jobs:
 
   cljs-test:
     docker:
-      - image: circleci/clojure:lein
+      - image: circleci/clojure:lein-2.8.1-node-browsers
        
     working_directory: ~/repo
 
@@ -49,11 +49,6 @@ jobs:
     
     steps:
       - checkout
-      - run:
-          name: Install node/npm
-          command: |
-            curl -sL https://deb.nodesource.com/setup_8.x | bash -
-            apt-get install -y nodejs  
 
       - run: npm install karma karma-firefox-launcher karma-cljs-test
       - run: npm install -g karma-cli
