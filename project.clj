@@ -111,6 +111,7 @@
 
 
                   :doo {:build "test"
+                        :alias {:default [:firefox]}
                         :paths {:karma "./node_modules/.bin/karma --port=9876 --no-colors"}}
                   :source-paths ["env/dev/clj"]
                   :resource-paths ["env/dev/resources"]

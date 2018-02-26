@@ -48,6 +48,21 @@
  (fn [db _]
    (:page-login/error db)))
 
+(re-frame/reg-sub
+ :page-login/submitting
+ (fn [db _]
+   (:page-login/submitting db)))
+
+(re-frame/reg-sub
+ :page-login/email
+ (fn [db _]
+   (:page-login/email db)))
+
+(re-frame/reg-sub
+ :page-login/pass
+ (fn [db _]
+   (:page-login/pass db)))
+
 ;; page
 (defn on-change [evt]
   (.preventDefault evt)
