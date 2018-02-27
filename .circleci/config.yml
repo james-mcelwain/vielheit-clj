@@ -21,22 +21,22 @@ jobs:
     
     steps:
       - checkout
-
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "project.clj" }}
           - v1-dependencies-
-
       - run: lein deps
-
       - save_cache:
           paths:
             - ~/.m2
           key: v1-dependencies-{{ checksum "project.clj" }}
-        
       - run: lein test
-
       - run: lein uberjar
+      - save_cache:
+          paths:
+            - ~/build/target/uberjar/vielheit.jar
+          keys:
+            - vielheit.jar-{{ .BuildNum }}
 
   cljs-test:
     docker:
@@ -50,22 +50,11 @@ jobs:
     
     steps:
       - checkout
-
       - run: npm install karma karma-firefox-launcher karma-cljs-test karma-cli
-
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "project.clj" }}
           - v1-dependencies-
-
-      - run: lein deps
-
-      - save_cache:
-          paths:
-            - ~/.m2
-            - ~/.npm
-          key: v1-dependencies-{{ checksum "project.clj" }}
-
       - run: lein with-profile test doo firefox once
 
   deploy:
@@ -77,6 +66,9 @@ jobs:
             
     steps:
       - checkout
+      - restore_cache:
+          keys:
+          - vielheit.jar-{{ .BuildNum }}
       - run: pip install ansible
       - run: git clone git@github.com:jmcelwain/hosts.git
       - run: pushd ./hosts; git checkout f971d51; popd 
@@ -88,7 +80,9 @@ workflows:
   build-test-deploy:
     jobs:
       - build
-      - cljs-test
+      - cljs-test:
+          requires:
+            - build
       - deploy:
           requires:
             - build
