@@ -1,7 +1,7 @@
 ---
 
 - hosts: vh-app
-  remote_user: root
+  remote_user: deploy
 
   vars:
     vielheit_jar_file: "{{ jar_file }}"
