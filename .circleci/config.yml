@@ -35,8 +35,7 @@ jobs:
       - save_cache:
           paths:
             - ~/build/target/uberjar/vielheit.jar
-          key:
-            - vielheit.jar-{{ .BuildNum }}
+          key: vielheit.jar-{{ .BuildNum }}
 
   cljs-test:
     docker:
