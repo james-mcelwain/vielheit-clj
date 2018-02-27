@@ -49,9 +49,15 @@ jobs:
     
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - npm-{{ checksum "project.clj" }}
+            - npm-
       - run: npm install karma karma-firefox-launcher karma-cljs-test karma-cli
       - restore_cache:
           keys:
+          - npm-{{ checksum "project.clj" }}
+          - npm-
           - v1-dependencies-{{ checksum "project.clj" }}
           - v1-dependencies-
       - run: lein with-profile test doo firefox once
