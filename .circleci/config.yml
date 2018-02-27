@@ -81,7 +81,7 @@ jobs:
       - run: git clone git@github.com:jmcelwain/hosts.git
       - run: pushd ./hosts; git checkout f971d51; popd 
       - run: cat ./hosts/config >> ~/.ssh/config
-      - run: ansible-playbook ./.ansible/deploy.yml -i ./.ansible/hosts
+      - run: ansible-playbook ./.ansible/deploy.yml -i ./.ansible/hosts -e "jar_file=$PWD/target/uberjar/vielheit.jar"
 
 workflows:
   version: 2
