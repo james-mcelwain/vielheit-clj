@@ -1,7 +1,3 @@
-# Clojure CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-clojure/ for more details
-#
 version: 2
 jobs:
   build:
@@ -30,14 +26,13 @@ jobs:
           paths:
             - ~/.m2
           key: v1-dependencies-{{ checksum "project.clj" }}
-      - run: lein test
       - run: lein uberjar
       - save_cache:
           paths:
             - ~/build/target/uberjar/vielheit.jar
-          key: vielheit.jar-{{ .BuildNum }}
+          key: vielheit.jar-{{ .Revision }}
 
-  cljs-test:
+  test:
     docker:
       - image: circleci/clojure:lein-2.8.1-node-browsers
        
@@ -49,11 +44,18 @@ jobs:
     
     steps:
       - checkout
-      - run: npm install karma karma-firefox-launcher karma-cljs-test karma-cli
       - restore_cache:
           keys:
+          - npm-{{ checksum "project.clj" }}
+          - npm-
           - v1-dependencies-{{ checksum "project.clj" }}
           - v1-dependencies-
+      - run: npm install karma karma-firefox-launcher karma-cljs-test karma-cli
+      - save_cache:
+          paths:
+            - ~/.npm
+          key: npm-{{ checksum "project.cj" }}
+      - run: lein test
       - run: lein with-profile test doo firefox once
 
   deploy:
@@ -67,7 +69,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - vielheit.jar-{{ .BuildNum }}
+          - vielheit.jar-{{ .Revision }}
       - run: pip install ansible
       - run: git clone git@github.com:jmcelwain/hosts.git
       - run: pushd ./hosts; git checkout f971d51; popd 
@@ -79,13 +81,13 @@ workflows:
   build-test-deploy:
     jobs:
       - build
-      - cljs-test:
+      - test:
           requires:
             - build
       - deploy:
           requires:
             - build
-            - cljs-test
+            - test
           filters:
             branches:
               only: feature/2
