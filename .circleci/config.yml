@@ -54,7 +54,7 @@ jobs:
       - save_cache:
           paths:
             - ~/.npm
-          key: npm-{{ checksum "project.cj" }}
+          key: npm-{{ checksum "project.clj" }}
       - run: lein test
       - run: lein with-profile test doo firefox once
 
