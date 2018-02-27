@@ -39,5 +39,5 @@
   (rf/dispatch-sync [:initialize-db])
   (load-interceptors!)
   (app-routes!)
-  (GET "/api/user" {:handler #(println %)})
+  ;; (GET "/api/user" {:handler #(println %)})
   (mount-components))
