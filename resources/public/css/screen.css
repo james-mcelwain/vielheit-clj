@@ -18,52 +18,51 @@ body {
 .navbar-nav .nav-link + .nav-link {
   margin-left: 0;
 }
-@media (min-width: 34em) {
-  .navbar-brand {
-    float: left;
-  }
-  .navbar-nav .nav-item {
-    float: left;
-  }
-  .navbar-divider,
-  .navbar-nav .nav-item+.nav-item,
-  .navbar-nav .nav-link + .nav-link {
-    margin-left: 1rem;
-  }
+
+
+/* LOGIN  */
+.login {
+    margin: 0 auto;
+    width: 300px;
 }
 
-@-moz-keyframes three-quarters-loader {
-    0% {
-        -moz-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    100% {
-        -moz-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
-}
-@-webkit-keyframes three-quarters-loader {
-    0% {
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    100% {
-        -webkit-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
-}
-@keyframes three-quarters-loader {
-    0% {
-        -moz-transform: rotate(0deg);
-        -ms-transform: rotate(0deg);
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    100% {
-        -moz-transform: rotate(360deg);
-        -ms-transform: rotate(360deg);
-        -webkit-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
+.login>.login-title-border {
+    border: 1px dotted black;
+    transform: rotate(22deg);
+    z-index: -10;
 }
 
+.login>.login-form div {
+    display: inline-block;
+}
+
+.login>.login-form label{
+    display: block;
+    margin: 0;
+    transform: rotate(358deg);
+}
+
+.login>.login-form input {
+    margin: 10px 0;
+    transform: rotate(3deg);
+
+}
+
+.login>.login-form button {
+    margin-left: 14px;
+    padding: 4px;
+    transform: rotate(45deg);
+}
+
+.login .login-accent-1 {
+    font-size: 80px;
+    transform: scaleY(-1);
+}
+
+.login .app-name {
+    font-size: 100px;
+    font-weight: light;
+    font-style: italic;
+    text-shadow: 2px 40px #ff44aa;
+    border-bottom: 15px solid #ff44aa;
+}

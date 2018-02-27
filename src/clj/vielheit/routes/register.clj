@@ -21,7 +21,7 @@
 (defroutes register-routes
   (POST "/register" {user :params}
         (try
-          (db/create-user! (auth/encrypt-password user))
+          (db/create-user! (auth/encrypt-pass user))
           (response/ok)
           (catch Exception e (handle-register-error e user)))))
 

@@ -11,8 +11,17 @@
         (update :headers #(merge {"x-csrf-token" js/csrfToken} %)))
     request))
 
+(defn authorization [request]
+  (println "auth!")
+  (if-let [token (.getItem js/localStorage "token")]
+    (-> request
+        (update :headers #(merge {"Authorization" (str "Token " token)} %)))
+    request))
+
 (defn load-interceptors! []
-  (swap! ajax/default-interceptors
-         conj
-         (ajax/to-interceptor {:name "default headers"
-                               :request default-headers})))
+    (swap! ajax/default-interceptors
+           conj
+           (ajax/to-interceptor {:name "default headers"
+                                 :request default-headers})
+           (ajax/to-interceptor {:name "autorization"
+                                 :request authorization})))

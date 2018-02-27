@@ -3,16 +3,15 @@
    [vielheit.db.core :as db]
    [buddy.hashers :as hashers]))
 
-(defn hash-password [password]
-  (hashers/derive password))
+(defn hash-pass [pass]
+  (hashers/derive pass))
 
-(defn password-matches? [email password]
+(defn pass-matches? [email pass]
   (if-let [user (db/get-user-by-email {:email email})]
     (do
-      (println (hash-password password) (:pass user))
-      (hashers/check password (:pass user)))
+      (hashers/check pass (:pass user)))
     false))
 
-(defn encrypt-password [user]
-  (assoc user :pass (hash-password (:pass user))))
+(defn encrypt-pass [user]
+  (assoc user :pass (hash-pass (:pass user))))
 

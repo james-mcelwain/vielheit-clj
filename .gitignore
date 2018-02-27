@@ -1,5 +1,6 @@
 /target
 /lib
+/out
 /classes
 /checkouts
 pom.xml
@@ -12,3 +13,5 @@ profiles.clj
 /log
 *.retry
 /figwheel_server.log
+/node_modules
+package.json
