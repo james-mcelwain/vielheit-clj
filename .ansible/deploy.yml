@@ -1,7 +1,0 @@
----
-
-- hosts: vh-app
-  tasks:
-    - copy:
-        src: ./vielheit.jar
-        dest: /opt/

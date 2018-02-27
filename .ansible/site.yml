@@ -1,0 +1,13 @@
+---
+
+- hosts: vh-app
+  remote_user: root
+
+  vars:
+    vielheit_jar_file: "{{ jar_file }}"
+
+  roles:
+    - java
+    - deploy
+    - systemd
+    
