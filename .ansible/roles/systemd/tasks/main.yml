@@ -1,0 +1,12 @@
+---
+- name: Install application service
+  template:
+    src: vielheit.j2
+    dest: /etc/systemd/system/vielheit.service
+
+- name: Start application
+  systemd:
+    state: started
+    name: vielheit
+    daemon_reload: yes
+

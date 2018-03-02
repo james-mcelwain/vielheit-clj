@@ -1,0 +1,5 @@
+---
+- name: Copy deploy artifact
+  copy:
+    src: "{{ vielheit_jar_file }}"
+    dest: /opt/

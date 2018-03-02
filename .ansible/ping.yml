@@ -1,6 +1,0 @@
----
-
-- hosts: vh
-  gather_facts: false
-  tasks:
-    - ping:
