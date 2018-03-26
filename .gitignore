@@ -14,4 +14,3 @@ profiles.clj
 *.retry
 /figwheel_server.log
 /node_modules
-package.json
